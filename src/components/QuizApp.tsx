@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Quiz, QuizQuestion as QuestionType, QuizResult, UserAnswer } from '../types/quiz';
@@ -30,13 +29,21 @@ const QuizApp: React.FC = () => {
 
   const loadQuiz = async () => {
     setQuizState(QuizState.LOADING);
-    const quizData = await fetchQuizData();
-    
-    if (quizData) {
-      setQuiz(quizData);
+    try {
+      const quizData = await fetchQuizData();
+      
+      if (quizData) {
+        setQuiz(quizData);
+        setQuizState(QuizState.INTRO);
+        toast.success("Quiz loaded successfully!");
+      } else {
+        toast.error("Could not load quiz data. Please try again.");
+        setQuizState(QuizState.INTRO); // Fallback to intro with error message
+      }
+    } catch (error) {
+      console.error("Error loading quiz:", error);
+      toast.error("Failed to load quiz. Please try again.");
       setQuizState(QuizState.INTRO);
-    } else {
-      setQuizState(QuizState.INTRO); // Fallback to intro with error message
     }
   };
 
