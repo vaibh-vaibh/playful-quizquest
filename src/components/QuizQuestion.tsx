@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { QuizQuestion as QuestionType } from '../types/quiz';
 import OptionCard from './OptionCard';
@@ -16,6 +16,11 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   showAnswer,
 }) => {
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
+
+  // Reset the selected option when the question changes
+  useEffect(() => {
+    setSelectedOptionId(null);
+  }, [question.id]);
 
   const handleSelectOption = (optionId: string) => {
     if (!selectedOptionId && !showAnswer) {

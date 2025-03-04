@@ -61,6 +61,7 @@ const QuizApp: React.FC = () => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const isCorrect = selectedOptionId === currentQuestion.correctOptionId;
     
+    // Create a new answer object
     const userAnswer: UserAnswer = {
       questionId,
       selectedOptionId,
@@ -68,15 +69,20 @@ const QuizApp: React.FC = () => {
       points: isCorrect ? currentQuestion.points : 0,
     };
 
+    // Add the new answer to the userAnswers array
     setUserAnswers((prev) => [...prev, userAnswer]);
+    
+    // Show the correct answer for a moment
     setQuizState(QuizState.CHECKING_ANSWER);
 
-    // Show the correct answer for a moment
+    // Wait for a moment before moving to the next question
     setTimeout(() => {
       if (currentQuestionIndex < quiz.questions.length - 1) {
+        // Move to the next question
         setCurrentQuestionIndex((prev) => prev + 1);
         setQuizState(QuizState.QUESTION);
       } else {
+        // If we've reached the end of the quiz, calculate results
         calculateResults();
       }
     }, 1500);
@@ -129,7 +135,7 @@ const QuizApp: React.FC = () => {
             <QuizIntro
               quiz={quiz}
               onStart={startQuiz}
-              isLoading={false}
+              isLoading={quizState === QuizState.LOADING}
             />
           )}
 
@@ -140,6 +146,7 @@ const QuizApp: React.FC = () => {
                 total={quiz.questions.length}
               />
               <QuizQuestionComponent
+                key={currentQuestion.id} // Add a key to force re-render when question changes
                 question={currentQuestion}
                 onAnswer={handleAnswer}
                 showAnswer={quizState === QuizState.CHECKING_ANSWER}
