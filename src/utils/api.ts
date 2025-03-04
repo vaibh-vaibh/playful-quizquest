@@ -2,7 +2,7 @@
 import { Quiz, QuizOption, QuizQuestion } from '../types/quiz';
 import { toast } from 'sonner';
 
-export const API_URL = 'https://opentdb.com/api.php?amount=10&category=12&type=multiple';
+export const API_URL = 'https://opentdb.com/api.php?amount=50&category=12&type=multiple';
 
 export async function fetchQuizData(): Promise<Quiz | null> {
   try {
