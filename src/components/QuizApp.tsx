@@ -1,10 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Quiz, QuizQuestion, QuizResult, UserAnswer } from '../types/quiz';
+import { Quiz, QuizQuestion as QuestionType, QuizResult, UserAnswer } from '../types/quiz';
 import { fetchQuizData } from '../utils/api';
 import ProgressBar from './ProgressBar';
-import QuizQuestion from './QuizQuestion';
+import QuizQuestionComponent from './QuizQuestion';
 import QuizResults from './QuizResults';
 import QuizIntro from './QuizIntro';
 import { toast } from 'sonner';
@@ -110,7 +110,7 @@ const QuizApp: React.FC = () => {
     );
   }
 
-  const currentQuestion: QuizQuestion | undefined =
+  const currentQuestion: QuestionType | undefined =
     quiz.questions[currentQuestionIndex];
 
   return (
@@ -121,7 +121,7 @@ const QuizApp: React.FC = () => {
             <QuizIntro
               quiz={quiz}
               onStart={startQuiz}
-              isLoading={quizState === QuizState.LOADING}
+              isLoading={false}
             />
           )}
 
@@ -131,7 +131,7 @@ const QuizApp: React.FC = () => {
                 current={currentQuestionIndex + 1}
                 total={quiz.questions.length}
               />
-              <QuizQuestion
+              <QuizQuestionComponent
                 question={currentQuestion}
                 onAnswer={handleAnswer}
                 showAnswer={quizState === QuizState.CHECKING_ANSWER}
